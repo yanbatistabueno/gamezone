@@ -53,14 +53,14 @@ export default function Slider({ settings, children, type }: SliderProps) {
       </Swiper>
       <IconButton
         className={`${type}button-prev absolute ${
-          type == "carousel" ? "left-20" : "left-16"
+          type == "carousel" ? "left-20" : "left-[3%]"
         } bottom-1/2 z-40 w-9 h-9 bg-secondary text-black rounded-full`}
         click={() => console.log("oi")}
         icon={<FaChevronLeft />}
       />
       <IconButton
         className={`${type}button-next absolute ${
-          type == "carousel" ? "right-20" : "right-16"
+          type == "carousel" ? "right-20" : "right-[3%]"
         } bottom-1/2 z-40 w-9 h-9 bg-secondary text-black rounded-full`}
         click={() => console.log("oi")}
         icon={<FaChevronRight />}
