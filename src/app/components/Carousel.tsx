@@ -1,13 +1,13 @@
-import { IProduct } from "@/typings/IProduct";
+import { IGame } from "@/typings/IProduct";
 import Button from "./Button";
 import { FaChevronRight } from "react-icons/fa6";
 import Slugify from "@/lib/Slugify";
-export default function Carousel(props: IProduct) {
+export default function Carousel(props: IGame) {
   return (
     <>
       <div className="w-full h-[400px] relative">
         <div className="w-full h-full flex flex-col items-center bg-black justify-center">
-          <div className="w-4/5 text-center flex p-5 flex-col items-center  gap-8 justify-center">
+          <div className="w-4/5 text-center flex p-5 flex-col items-center gap-8 justify-center">
             <h1 className="z-10 relative text-6xl font-semibold text-white">
               {props.name}
             </h1>
@@ -21,7 +21,7 @@ export default function Carousel(props: IProduct) {
 
           <img
             // src={props.url}
-            src={props.url[1]}
+            src={props.imageUrls[1]}
             alt={`${props.name} image`}
             className="h-full w-full object-cover absolute top-0 z-0 opacity-40"
           />

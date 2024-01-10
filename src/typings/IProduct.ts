@@ -6,24 +6,32 @@ import GiftCardStores from "./GiftCardStores";
 export interface IProduct {
   id: string;
   name: string;
-  description: Array<string>;
+  overview: string;
+  description: Array<{ title: string; text: string }>;
   price: number;
-  type: ProductType;
-  info: string | GameInfo | GiftCardInfo | ConsoleInfo;
-  url: string;
+  imageUrls: Array<string>;
 }
 
-type GameInfo = {
-  genre: Array<GameGenre>;
-  publisher: string;
+export interface IGame extends IProduct {
   releaseDate: string;
-  platform: Array<Platforms>;
-};
+  publisher: string;
+  platforms: Array<Platforms>;
+  genres: Array<GameGenre>;
+}
 
-type GiftCardInfo = {
-  store: GiftCardStores;
-};
+export const isGame = (product: IProduct): product is IGame =>
+  !!(product as IGame)?.platforms;
 
-type ConsoleInfo = {
-  brand: Platforms;
-};
+export interface IConsole extends IProduct {
+  manufacturer: string;
+}
+
+export const isConsole = (product: IProduct): product is IConsole =>
+  !!(product as IConsole)?.manufacturer;
+
+export interface IGiftCard extends IProduct {
+  store: string;
+}
+
+export const isGiftCard = (product: IProduct): product is IGiftCard =>
+  !!(product as IGiftCard)?.store;

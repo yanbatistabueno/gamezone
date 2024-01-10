@@ -1,4 +1,4 @@
-export function slugify(str: string) {
+export function slugify(str) {
   str = str.toLowerCase();
   str = str.replace(/[\s\W]+/g, "-");
   str = str.replace(/^-+|-+$/g, ""); // Remove leading and trailing dashes

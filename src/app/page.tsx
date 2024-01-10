@@ -1,20 +1,26 @@
 "use client";
 
-import { useContext } from "react";
-
 import Slider from "./components/Slider";
 import ProductCard from "./components/ProductCard";
 import Carousel from "./components/Carousel";
 import "swiper/css";
 
 import { SwiperProps } from "swiper/react";
+import { IGame, IProduct } from "@/typings/IProduct";
+import { useFetch } from "./hooks/useFetch";
+import { api } from "@/lib/api";
 
-import { ProductContext } from "@/context/ProductContext";
+interface IGameResponse {
+  products: Array<IGame>;
+  totalPages: number;
+  totalProducts: number;
+}
 
 export default function Home() {
-  const { products } = useContext(ProductContext);
-
-  const slideSettings = {
+  const { data: productResponse, isFetching } = useFetch<IGameResponse>(
+    "/products/games?size=50"
+  );
+  const slideSettings: SwiperProps = {
     spaceBetween: 0,
     navigation: true,
     pagination: {
@@ -25,6 +31,7 @@ export default function Home() {
   };
   const productsList: SwiperProps = {
     navigation: true,
+    autoplay: true,
     spaceBetween: 20,
     slidesPerView: 2,
     loop: true,
@@ -36,29 +43,35 @@ export default function Home() {
   };
   const featuredGames = [
     "The Witcher 3: Wild Hunt",
-    "Bloodborne",
+    "Hades",
     "Marvel's Spider-Man",
   ];
+
   return (
     <main>
-      <Slider.Swiper type="carousel" settings={slideSettings}>
-        {products
-          .filter((product) => featuredGames.includes(product.name))
-          .sort((a, b) => b.price - a.price)
-          .map((product) => {
-            return <Carousel key={product.id} {...product} />;
-          })}
-      </Slider.Swiper>
-      <h1 className="mb-4 font-semibold text-3xl ml-10">Trending</h1>
-      <div className="w-full pt-4 pb-8">
-        <Slider.Swiper type="product-card" settings={productsList}>
-          {products
-            .filter((product) => product.price > 100 && product.price < 250)
+      {!isFetching && (
+        <Slider.Swiper type="carousel" settings={slideSettings}>
+          {productResponse?.products
+            .filter((product) => featuredGames.includes(product.name))
             .sort((a, b) => b.price - a.price)
             .map((product) => {
-              return <ProductCard key={product.id} {...product} />;
+              console.log(product);
+              return <Carousel key={product.id} {...product} />;
             })}
         </Slider.Swiper>
+      )}
+      <h1 className="mb-4 font-semibold text-3xl ml-10">Trending</h1>
+      <div className="w-full pt-4 pb-8">
+        {!isFetching && (
+          <Slider.Swiper type="product-card" settings={productsList}>
+            {productResponse?.products
+              .filter((product) => product.price > 100 && product.price < 250)
+              .sort((a, b) => b.price - a.price)
+              .map((product) => {
+                return <ProductCard key={product.id} {...product} />;
+              })}
+          </Slider.Swiper>
+        )}
       </div>
     </main>
   );
